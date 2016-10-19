@@ -46,6 +46,14 @@ RUN set -ex \
 	&& buildDeps=' \
 		tcl-dev \
 		tk-dev \
+		checkinstall \
+		libreadline-gplv2-dev \
+		libncursesw5-dev \
+		libsqlite3-dev \
+		libgdbm-dev \
+		libssl-dev \
+		libc6-dev \
+		libbz2-dev \
 	' \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	\
