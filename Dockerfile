@@ -69,8 +69,6 @@ RUN set -ex \
 	&& if [ ! -e /usr/local/bin/pip3 ]; then : \
 		&& wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
 		&& python3 /tmp/get-pip.py "pip==$PYTHON_PIP_VERSION" \
-### Jenkins does not provide pip for python2
-		&& python2 /tmp/get-pip.py "pip==$PYTHON_PIP_VERSION" \
 		&& rm /tmp/get-pip.py \
 	; fi \
 # we use "--force-reinstall" for the case where the version of pip we're trying to install is the same as the version bundled with Python
@@ -90,5 +88,9 @@ RUN set -ex \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& rm -rf /usr/src/python ~/.cache
 
-RUN rm -rf /var/lib/apt/lists/*
+### install pip for python 2.7
+RUN	wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
+	&& python /tmp/get-pip.py "pip==$PYTHON_PIP_VERSION" \
+	&& rm /tmp/get-pip.py \
+	&& rm -rf /var/lib/apt/lists/*
 
