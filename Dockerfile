@@ -2,27 +2,17 @@ FROM jenkins:2.19.1
 
 USER root
 
+# install dependencies
+
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
 	cmake \
 	vim \
-	sudo
-
-RUN apt-get install -y --fix-missing maven
-
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs
-RUN npm version
-RUN npm config set cache /var/jenkins_home/.npmcache --global
-
-RUN apt-get install -y apt-transport-https ca-certificates
-RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-RUN echo "deb https://apt.dockerproject.org/repo debian-jessie main" >> /etc/apt/sources.list.d/docker.list
-RUN apt-get update
-RUN apt-cache policy docker-engine
-RUN apt-get install -y docker-engine
-
+	sudo \
+	apt-transport-https \
+	ca-certificates \
 
 # install python
+
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
 
@@ -79,6 +69,8 @@ RUN set -ex \
 	&& if [ ! -e /usr/local/bin/pip3 ]; then : \
 		&& wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
 		&& python3 /tmp/get-pip.py "pip==$PYTHON_PIP_VERSION" \
+### Jenkins does not provide pip for python2
+		&& python2 /tmp/get-pip.py "pip==$PYTHON_PIP_VERSION" \
 		&& rm /tmp/get-pip.py \
 	; fi \
 # we use "--force-reinstall" for the case where the version of pip we're trying to install is the same as the version bundled with Python
@@ -98,32 +90,5 @@ RUN set -ex \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& rm -rf /usr/src/python ~/.cache
 
-# make some useful symlinks that are expected to exist
-RUN cd /usr/local/bin \
-	&& { [ -e easy_install ] || ln -s easy_install-* easy_install; } \
-	&& ln -s idle3 idle \
-	&& ln -s pydoc3 pydoc \
-	&& ln -s python3 python \
-	&& ln -s python3-config python-config
-
-
 RUN rm -rf /var/lib/apt/lists/*
 
-RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
-RUN gpasswd -a jenkins docker
-
-WORKDIR /var/jenkins_home
-
-USER jenkins
-
-ENV JENKINS_HOME /var/jenkins_home
-ENV JENKINS_SLAVE_AGENT_PORT 50000
-
-EXPOSE 8080
-EXPOSE 50000
-
-COPY plugins.txt /usr/share/jenkins/plugins.txt
-RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
-
-VOLUME ["/var/jenkins_home"]
-ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
