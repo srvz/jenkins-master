@@ -1,14 +1,4 @@
-# jenkins-master
+# jenkins-master:python3.5.2
 
-Jenkins docker image with Python 2.7, Python 3.5/pip3, Nodejs 6.9.0, Java 8, Docker 1.12.2
+Jenkins-master base image with python 3.5.2, pip3 and pip for python 2.7.9, because of Jenkins base image does not have pip installed.
 
-## Run
-
-```
-docker pull srvz/jenkins-master
-
-docker run -d --name jenkins-master -p 8080:8080 -p 50000:50000 \
-    -v {your/path}:/var/jenkins_home \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    srvz/jenkins-master
-```
