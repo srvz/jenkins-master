@@ -5,7 +5,7 @@ USER root
 RUN apt-get update && apt-get install -y --fix-missing maven
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs
+RUN apt-get install -y nodejs g++-4.9
 RUN npm version \
 	&& npm config set cache /var/jenkins_home/.npmcache --global
 
