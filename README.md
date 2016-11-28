@@ -1,6 +1,6 @@
 # jenkins-master
 
-Jenkins docker image with Python 2.7.9/pip, Python 3.5.2/pip3, Nodejs 6.9.1, Java 8/maven 3.0.5, Docker 1.12.2, vim
+Jenkins docker image with Python 2.7.9/pip, Python 3.5.2/pip3, Nodejs 6.9.1, Java 8/maven 3.3.9, Docker 1.12.2, vim
 
 ## Run
 
