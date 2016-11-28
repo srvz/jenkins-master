@@ -1,4 +1,4 @@
-FROM jenkins:2.19.1
+FROM jenkins:2.19.3
 
 USER root
 
@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 	vim \
 	sudo \
 	apt-transport-https \
-	ca-certificates
+	ca-certificates \
+	g++
 
 # install python
 
