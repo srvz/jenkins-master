@@ -1,12 +1,1 @@
 swarm:2.2
-managed-scripts:1.2.4
-build-environment:1.6
-sidebar-link:1.7
-mission-control-view:0.9.7
-envinject:1.93.1
-greenballs:1.15
-credentials:2.1.4
-dropdown-viewstabbar-plugin:1.7
-github:1.22.3
-view-job-filters:1.27
-workflow-aggregator:2.4
